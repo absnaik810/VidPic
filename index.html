@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+	<title>Extract Image From Video | Extract Frames From Video - video2pics</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Extract Image From Video. Extract frames from video files to JPG files at video2pics. Find video to jpg converter tool to make photo galleries from video."/>
+	<meta name="keywords" content="extract image from video, video to picture converter, video to photo converter, video to jpg converter, video to image converter, capture picture from video, extract frames from video" />
+	<meta name="author" content="Sanjay Kumar Nishad" />
+	
+	<meta property="og:title" content="Extract Image From Video. Extract frames from video files to JPG files at video2pics. Find video to jpg converter tool to make photo galleries from video." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.video2pics.com/logo_meta.png" /><!--ToDo: add logo -->
+    <meta property="og:site_name" content="video2pics" />
+    <meta property="og:description" content="Extract Image From Video. Extract frames from video files to JPG files at video2pics. Find video to jpg converter tool to make photo galleries from video." />
+    <meta property="og:url" content="http://www.video2pics.com/" />
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+	
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/ccv.js"></script>
+	<script src="js/jszip.min.js"></script>
+	<script src="app/controllers/vidPixController.js"></script>
+	<script>
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-87343600-2']);
+	_gaq.push(['_trackPageview']);
+
+	(function () {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+    
+	</script>
+</head>
+
+<body>
+    <div class="header">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header text-center">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar top-bar"></span>
+                            <span class="icon-bar middle-bar"></span>
+                            <span class="icon-bar bottom-bar"></span>
+                        </button>
+                    <a class="navbar-brand" href="/">video2pics</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#how-to-use">How To Use</a></li>
+						<li><a href="#about">About</a></li>
+                        <li><a href="#modalContact" data-toggle="modal">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container" ng-controller="vidPixController">
+        <div class="vidPixContainer">
+            <div class="row" ng-hide="isLargeView" ng-init="isLargeView = false;">
+                <!-- <p>
+                    Extract the images from any video or your camera using Face Detection
+                </p> -->
+                <div class="col-sm-3 col-md-2 col-lg-2 ad1">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- VidPix-Respnsive -->
+					<ins class="adsbygoogle"
+						 style="display:block"
+						 data-ad-client="ca-pub-3024582900178677"
+						 data-ad-slot="6776048542"
+						 data-ad-format="auto"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+                </div>
+                <div class="col-sm-9 col-md-10 col-lg-10">
+                    <div class="">
+                        <div class="row">
+                            <div class="col-md-5">
+								<h1 class="margin-0">Upload video to extract images</h1>
+								<p>Image will be extracted using face detection from the video.</p>
+								<!--ToDo: show image when video src is empty -->
+								<video id="userVideo" src="" controls></video>
+                                <input id="fileInput" type="file" accept="video/*" />
+                                <br/>
+                                <form>
+                                	<fieldset>
+                                		<legend>Configuration</legend>
+                               		    <div class="form-group ng-hide">
+									      <label class="control-label col-sm-5">Range:</label>
+									      <div class="col-sm-1 padding-0">
+									        <select class="form-control" ng-model="from.mm">
+												<option ng-repeat="i in getNumberArrary(60)" value="{{i}}">{{i}}</option>
+											</select>
+									      </div>
+										  <div class="col-sm-1 padding-0">
+									        <select class="form-control" ng-model="from.ss" ng-options="i as i.label for i in imageQualities"></select>
+									      </div>
+										  <div class="col-sm-1 text-center">
+									        -
+									      </div>
+										  <div class="col-sm-1 padding-0">
+									        <select class="form-control" ng-model="to.mm" ng-options="i as i.label for i in imageQualities"></select>
+									      </div>
+										  <div class="col-sm-1">
+									        <select class="form-control" ng-model="to.ss" ng-options="i as i.label for i in imageQualities"></select>
+									      </div>
+									    </div>
+										<div class="form-group">
+									      <label class="control-label">Image Size:</label>
+									      <select class="form-control" ng-model="imageQuality" ng-options="i as i.label for i in imageQualities"></select>
+										</div>
+										<div class="form-group">
+									      <label class="control-label">Image Extract Speed:</label>
+									      <select class="form-control" ng-model="scanLevel" ng-options="i as i.label for i in scanLevels"></select>
+										</div>
+                                	</fieldset>
+                                </form>
+                                <div class="progress-container" ng-show="showProgress">Extracting Images: {{progress | number:2}} %</div>
+                                <hr>
+								<div class="row">
+									<div class="col-md-12 text-right">
+									  <button class="btn btn-primary" ng-disabled="showProgress" ng-click="imageFromVideos();">Extract Images</button>	
+									  <button class="btn btn-primary" ng-click="generateImage(imagesVideo);" ng-show="false">Get Funny Image</button>
+								  </div>
+								</div>
+								<hr>
+                            </div>
+                            <div class="col-md-7">
+                            	<div class="row">
+                            		<div class="col-md-12">
+                            			<h4>Extracted Images
+											<a href="#" class="pull-right" ng-click="isLargeView = !isLargeView;">
+												Larg View
+												<span class="glyphicon glyphicon-th"></span>
+											</a>
+										</h4>
+                            			<hr>
+										<div class="image-container-main images">
+											<div class="item" ng-repeat="img in imagesVideo" ng-class="{selected: img.selected}">
+												<img ng-src="{{img.src}}" alt="{{img.id}}" ng-click="selectImage(img)" />
+												<div class="item-footer">
+													<a ng-click="downloadImage(img)" title="Download image."><span class="glyphicon glyphicon-download-alt"></span></a>
+													<a ng-click="shareImage(img)" title="Share image on Facebook."><span class="glyphicon glyphicon-share"></span></a>
+													<a class="checked" ng-if="img.selected" ng-click="selectImage(img)"><span class="glyphicon glyphicon-ok"></span></a>
+												</div>
+											</div>
+										</div>
+										<h4 class="text-center"><b>{{selectedImageCount}}</b> images are selected out of <b>{{imagesVideo.length}}</b>.</h4>
+					                </div>
+                            	</div>
+                            	
+                                <!-- <div class="row">
+                                	<div class="col-md-12">
+	                                	<img ng-src="imagesVideo[imgIndex]" ng-init="pageIndex = imgIndex = 0">
+	                                	
+	                                	<ul class="pagination">
+										  <li><a href="#" ng-click="imgIndex = 0"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
+										  <li><a href="#" ng-click="imgIndex == 0 ? imagesVideo.length - 1 : imgIndex - 1"><span class="glyphicon glyphicon-backward"></span></a></li>
+										  <li><a class="padding-0" href="#"><input class="page-no" ng-model="pageIndex" ng-keyup="pageNoKeyup($event)"></a></li>
+										  <li><a href="#" ng-click="imgIndex == imagesVideo.length ? 0 : imgIndex + 1"><span class="glyphicon glyphicon-forward"></span></a></li>
+										  <li><a href="#" ng-click="imgIndex = imagesVideo.length"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+										</ul>
+									</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="row" ng-show="isLargeView">
+				<div class="col-md-12">
+					<div class="image-container-large">
+						<div class="col-md-12">
+							<h4>Extracted Images
+								<a href="#" class="pull-right" ng-click="isLargeView = false;">
+									X
+								</a>
+							</h4>
+						</div>
+						<div class="col-md-12 images">
+							<div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="img in imagesVideo">
+								<div class="item" ng-class="{selected: img.selected}">
+									<img ng-src="{{img.src}}" alt="{{img.id}}" ng-click="selectImage(img)" />
+									<div class="item-footer">
+										<a ng-click="downloadImage(img)" title="Download image."><span class="glyphicon glyphicon-download-alt"></span></a>
+										<a ng-click="shareImage(img)" title="Share image on Facebook."><span class="glyphicon glyphicon-share"></span></a>
+										<a class="checked" ng-if="img.selected" ng-click="selectImage(img)"><span class="glyphicon glyphicon-ok"></span></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<h4 class="text-center"><b>{{selectedImageCount}}</b> images are selected out of <b>{{imagesVideo.length}}</b>.</h4>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row" ng-show="imagesVideo.length > 0">
+				<div class="col-md-12 text-right" ng-init="selectedImageCount = 0">
+					<button class="btn btn-primary" ng-click="downloadImages(true);">Download All</button>
+					<button class="btn btn-primary" ng-click="downloadImages();" ng-disabled="selectedImageCount <= 0">Download Selected</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div>
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!-- VidPix-Respnsive -->
+						<ins class="adsbygoogle"
+							 style="display:block"
+							 data-ad-client="ca-pub-3024582900178677"
+							 data-ad-slot="6776048542"
+							 data-ad-format="auto"></ins>
+						<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
+				</div>
+			</div>        
+        </div>
+        <canvas class="ng-hide" id="liveCam"></canvas>
+		<!-- Modal -->
+		<div class="modal fade" id="modalShare" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<a href="#" ng-click="postImageFB()" data-dismiss="modal">
+							<img src="/img/share-facebook.png" alt="Share on Facebook" style="width: 100%;">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="modalProgress" class="modal fade ng-scope in" role="dialog" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h4 class="progress-number">Extracting images: {{(progress | number:2) || 0}}%</h4>
+								<div class="progress-bar-container">
+									<div class="progress-bar" style="width: {{progress || 0}}%;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Extract in background</button>
+						<button type="button" class="btn btn-danger" ng-click="abortExtract();">Abort</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <footer class="footer">
+      <div class="container text-center">
+        <h5 class="">&copy; Copyright video2pics.com 2016</h5>
+      </div>
+    </footer>
+	
+	<div id="modalContact" class="modal fade" role="dialog" ng-controller="contactController">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Contact Us</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>First Name</label>
+								<input type="text" class="form-control" ng-model="c.FirstName" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Last Name</label>
+								<input type="text" class="form-control" ng-model="c.LastName" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Email</label>
+								<input type="text" class="form-control" ng-model="c.Email" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Phone#</label>
+								<input type="text" class="form-control" ng-model="c.Phone" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Message</label>
+								<textarea class="form-control" row="5" ng-model="c.Message"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" ng-click="send()">
+						<span ng-hide="sending">Submit</span>
+						<img ng-show="sending" src="/img/btn-loader.gif" alt="Sending..."/>
+					</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

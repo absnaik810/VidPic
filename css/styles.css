@@ -1,0 +1,226 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 50px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 50px;
+  padding-top: 10px;
+}
+
+body {
+	padding-top: 75px;
+	background-color: rgba(251, 251, 251, 0.5);/*#fbfbfb*/
+}
+
+.h1, h1 {
+    font-size: 4.2vh;
+}
+
+video {
+	width: 100%;
+	border: 1px solid #ddd;
+}
+
+a:focus, a:hover {
+	text-decoration: none;
+}
+.navbar-default, .footer {
+	background-color: #3b5998;
+	color: #fff;
+}
+
+.navbar-default .navbar-nav>li>a,
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-brand ,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover  {
+    color: #fff;
+}
+
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover {
+    background-color: transparent;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #fff;
+}
+
+.navbar-toggle .icon-bar {
+  width: 22px;
+  transition: all 0.2s;
+}
+.navbar-toggle .top-bar {
+  top: 6px;
+  position: relative;
+  transform: rotate(225deg);
+  transform-origin: 50% 50%;
+}
+.navbar-toggle .middle-bar {
+  opacity: 0;
+}
+.navbar-toggle .bottom-bar {
+  top: -6px;
+  position: relative;
+  transform: rotate(-225deg);
+  transform-origin: 50% 50%;
+}
+.navbar-toggle.collapsed .top-bar {
+  top: 0;
+  transform: rotate(0);
+}
+.navbar-toggle.collapsed .middle-bar {
+  opacity: 1;
+}
+.navbar-toggle.collapsed .bottom-bar {
+  top: 0;
+  transform: rotate(0);
+}
+
+.content{
+    margin-top: 65px;
+}
+
+.demoTab li a{
+    cursor: pointer !important;
+}
+
+.image-container-main {
+	height: 420px;
+	border: 1px solid #ddd;
+    box-shadow: 2px 2px 2px #ddd;
+}
+
+.image-container-large {
+	border: 1px solid #ddd;
+    box-shadow: 2px 2px 2px #ddd;
+	margin-bottom: 10px;
+}
+
+.image-container-large .images{
+	height: 420px;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 10px;
+}
+
+.images {
+    overflow: auto;
+    text-align: center;
+}
+
+.images .item img{
+	width: 100%;
+}
+
+.images .item {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	position: relative;
+}
+
+.images .item.selected > img {
+	border: 5px solid rgba(13, 0, 255, 0.43);
+	width: calc(100% - 5px);
+}
+
+.item-footer {
+	position: absolute;
+	bottom: 0px;
+	padding: 15px 12px;
+	width: 100%;
+    text-align: left;
+}
+
+.item-footer a{
+	padding: 6px;
+	background-color: #9691FF;
+	border-radius: 50%;
+	cursor: pointer;
+	font-size: large;
+}
+
+.item-footer a,
+.item-footer a:hover,
+.item-footer a:active{
+	color: #fff;
+	text-decoration: none;
+}
+
+.item-footer a.checked {
+	position: absolute;
+	right: 5px;
+	background-color: transparent;
+	padding: 7px;
+}
+
+.margin-0 {
+	margin: 0 !important;
+}
+
+.padding-0 {
+	padding: 0 !important;
+}
+
+.pagination input.page-no {
+    width: 45px;
+    height: 32px;
+    border: none;
+    text-align: center;
+}
+
+.margin-20 {
+	margin-bottom: 20px;
+}
+
+.progress-container {
+	padding: 10px 0px;
+}
+
+#modalShare .modal-body a img {
+	width: 100%;
+}
+
+#modalContact .modal-footer img {
+	width: 25px;
+    height: 20px;
+}
+
+#modalProgress .modal-content {
+	margin-top: 35vh;
+}
+
+#modalProgress .progress-number {
+	
+}
+
+#modalProgress .progress-bar-container {
+	width: 100%;
+	height:25px;
+	border: 1px solid #3b5998;
+}
+
+#modalProgress .progress-bar {
+	background: #3b5998;
+}
+
+@media (max-width: 768px) {
+	.ad1 {
+		display: none;
+	}
+}
